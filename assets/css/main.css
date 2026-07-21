@@ -241,7 +241,8 @@ button { font: inherit; }
   .hero-copy { padding-top: 3rem; }
   .hero-composition { margin: 1rem auto 0; max-width: 690px; }
   .story-layout { grid-template-columns: 1fr; }
-  .story-gallery { min-height: 600px; }
+  .story-gallery { display: flex; gap: 1rem; min-height: 0; overflow-x: auto; overscroll-behavior-inline: contain; padding: 0 0 1rem; scroll-padding-inline: 1rem; scroll-snap-type: x mandatory; }
+  .story-gallery figure, .story-gallery .gallery-large { aspect-ratio: 16 / 10; flex: 0 0 min(76vw,620px); grid-row: auto; scroll-snap-align: start; }
   .journey-panel, .state-awards { grid-template-columns: 1fr; }
   .directory-head { align-items: flex-start; flex-direction: column; }
   .closing-panel { align-items: flex-start; flex-direction: column; }
@@ -265,6 +266,15 @@ button { font: inherit; }
   .award-filters { max-width: 100%; overflow-x: auto; }
   .closing-actions { align-items: stretch; flex-direction: column; width: 100%; }
   .footer-bottom { align-items: flex-start; flex-direction: column; gap: .5rem; }
+  .video-deck-shell { min-height: 0; padding: 0 0 2.5rem; }
+  .video-deck-shell::after { display: none; }
+  .video-deck { display: flex; gap: .9rem; height: auto; overflow-x: auto; overscroll-behavior-inline: contain; padding: 1rem 0 1.25rem; scroll-padding-inline: 1rem; scroll-snap-type: x mandatory; }
+  .video-card, .video-card[data-position="-1"], .video-card[data-position="0"], .video-card[data-position="1"] { aspect-ratio: 16 / 10; filter: none; flex: 0 0 84vw; height: min(52.5vw,350px); left: auto; max-width: 560px; opacity: 1; position: relative; scroll-snap-align: center; top: auto; transform: none; width: auto; z-index: auto; }
+  .video-card-content { max-width: 88%; padding: 1.25rem; }
+  .video-card-content h3 { font-size: 1.35rem; }
+  .video-play { height: 58px; width: 58px; }
+  .video-deck-hint { color: var(--muted); margin: .5rem 0 0; padding: 0; text-align: center; }
+  .video-feedback { color: var(--brand-deep); }
 }
 @media (max-width:575.98px) {
   .navbar-brand img { height: 32px; width: 193px; }
@@ -281,8 +291,8 @@ button { font: inherit; }
   .note-books { display: none; }
   .note-years { bottom: 2%; left: 1%; }
   .section-intro-row h2 { font-size: 2.4rem; }
-  .story-gallery { min-height: 460px; }
-  .story-gallery { gap: .6rem; }
+  .story-gallery { gap: .75rem; min-height: 0; }
+  .story-gallery figure, .story-gallery .gallery-large { flex-basis: 86vw; }
   .book-grid { gap: .75rem; }
   .book-stage { border-radius: 16px; padding: 11%; }
   .book-meta h3 { font-size: .95rem; }
@@ -296,29 +306,12 @@ button { font: inherit; }
   .closing-panel { border-radius: 22px; padding: 1.5rem; }
   .closing-panel h2 { font-size: 2.4rem; }
 }
-@media (max-width:991.98px) {
-  .video-deck-shell { min-height: 590px; }
-  .video-deck { height: 505px; }
-  .video-card { width: min(680px,72vw); }
-}
+
 @media (max-width:767.98px) {
   .video-section { padding-top: 6rem; }
-  .video-deck-shell { min-height: 510px; }
-  .video-deck { height: 425px; }
-  .video-card { border-radius: 18px; top: 20px; width: min(520px,82vw); }
-  .video-card[data-position="-1"] { transform: translateX(-110%) translateY(45px) scale(.82) rotate(-1.5deg); }
-  .video-card[data-position="1"] { transform: translateX(10%) translateY(45px) scale(.82) rotate(1.5deg); }
-  .video-card-content { max-width: 88%; padding: 1.25rem; }
-  .video-card-content h3 { font-size: 1.35rem; }
-  .video-play { height: 58px; width: 58px; }
-  .video-deck-hint { margin-top: -1.5rem; padding: 0 1rem; text-align: center; }
 }
 @media (max-width:575.98px) {
-  .video-deck-shell { min-height: 455px; }
-  .video-deck { height: 375px; }
-  .video-card { aspect-ratio: 4 / 3; width: 84vw; }
-  .video-card[data-position="-1"] { transform: translateX(-116%) translateY(42px) scale(.78) rotate(-1.5deg); }
-  .video-card[data-position="1"] { transform: translateX(16%) translateY(42px) scale(.78) rotate(1.5deg); }
+  .video-card, .video-card[data-position="-1"], .video-card[data-position="0"], .video-card[data-position="1"] { flex-basis: 86vw; height: 53.75vw; }
   .video-card-content { max-width: 92%; }
   .video-card-content p { display: none; }
   .video-play { height: 52px; width: 52px; }

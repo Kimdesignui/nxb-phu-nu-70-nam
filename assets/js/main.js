@@ -81,7 +81,8 @@
   };
 
   const openVideoCard = (card) => {
-    if (card.dataset.position !== "0") {
+    const compactVideoDeck = window.matchMedia("(max-width: 767.98px)").matches;
+    if (card.dataset.position !== "0" && !compactVideoDeck) {
       activateVideoCard(card);
       return;
     }
