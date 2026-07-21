@@ -1,2 +1,5 @@
 .playwright-cli/
 output/
+
+# Local Netlify folder
+.netlify
