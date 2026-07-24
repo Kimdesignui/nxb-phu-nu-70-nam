@@ -254,11 +254,13 @@ button { font: inherit; }
 .directory-head::after { background: linear-gradient(180deg,var(--brand),rgba(215,25,45,.08)); border-radius: 999px; bottom: 2rem; content: ""; position: absolute; right: -2px; top: 2rem; width: 3px; }
 .directory-head h3 { font-size: clamp(1.75rem,2.4vw,2.35rem); font-weight: 740; letter-spacing: -.05em; line-height: 1.05; margin: 0; }
 .directory-head .section-tag { margin-bottom: 1rem; }
-.award-filters { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: auto; scrollbar-width: none; }
+.award-filters { align-items: flex-start; display: flex; flex-direction: column; gap: .55rem; margin-top: auto; width: 100%; }
 .award-filters::-webkit-scrollbar { display: none; }
-.filter-button { background: #fff; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .9375rem; font-weight: 650; padding: .52rem .72rem; transition: background .2s ease, border-color .2s ease, color .2s ease; white-space: nowrap; }
-.filter-button:hover, .filter-button:focus-visible { border-color: rgba(215,25,45,.35); color: var(--brand); outline: 0; }
-.filter-button.active { background: var(--brand); border-color: var(--brand); box-shadow: 0 8px 18px rgba(181,14,33,.18); color: #fff; }
+.filter-button { align-items: center; background: transparent; border: 0; color: #999da8; display: inline-flex; font-size: .9375rem; font-weight: 620; gap: .75rem; padding: .2rem .1rem; text-align: left; transition: color .2s ease, transform .2s ease; white-space: nowrap; }
+.filter-button::before { background: #b9bdc6; border-radius: 50%; content: ""; flex: 0 0 auto; height: 6px; transition: background .2s ease, box-shadow .2s ease, transform .2s ease; width: 6px; }
+.filter-button:hover, .filter-button:focus-visible { color: var(--brand); outline: 0; transform: translateX(2px); }
+.filter-button.active { background: transparent; box-shadow: none; color: var(--ink); font-weight: 760; }
+.filter-button.active::before { background: var(--brand); box-shadow: 0 0 0 3px #fff, 0 0 0 5px rgba(215,25,45,.22); transform: scale(1.1); }
 .award-list { border-bottom: 1px solid var(--line); display: flex; grid-area: list; min-width: 0; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: x mandatory; scrollbar-width: none; }
 .award-list::-webkit-scrollbar { display: none; }
 .award-list article { border-right: 1px solid var(--line); cursor: pointer; display: flex; flex: 0 0 270px; flex-direction: column; gap: .8rem; min-height: 500px; padding: 1.5rem; scroll-snap-align: start; transition: background .28s ease, color .28s ease, flex-basis .35s cubic-bezier(.2,.8,.2,1); }
@@ -346,7 +348,7 @@ button { font: inherit; }
   .state-awards li { border-left: 0; border-top: 1px solid rgba(255,255,255,.14); padding: .65rem 0 0; }
   .award-list { scroll-padding-inline: 1rem; }
   .award-list article, .award-list article.active { flex-basis: min(84vw,330px); min-height: 480px; padding: 1.25rem; scroll-snap-align: center; }
-  .award-filters { flex-wrap: nowrap; max-width: 100%; overflow-x: auto; padding-bottom: .25rem; }
+  .award-filters { max-width: 100%; overflow: visible; padding-bottom: 0; }
   .closing-actions { align-items: stretch; flex-direction: column; width: 100%; }
   .footer-bottom { align-items: flex-start; flex-direction: column; gap: .5rem; }
   .video-deck-shell { min-height: 0; padding: 0 0 2.5rem; }
