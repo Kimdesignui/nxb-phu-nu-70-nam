@@ -206,14 +206,14 @@ button { font: inherit; }
 
 .video-section { background: #fff; overflow: hidden; padding: clamp(6.5rem,9vw,9rem) 0 0; position: relative; }
 .video-section .section-intro-row h2 { font-size: clamp(2.25rem,3.3vw,3.5rem); line-height: 1.04; }
-.video-deck-shell { min-height: 660px; overflow: clip; padding: 1rem 0 0; position: relative; }
-.video-deck-shell::after { background: var(--brand); bottom: 0; content: ""; height: 44%; left: 0; position: absolute; right: 0; }
-.video-deck-shell > .container { position: relative; z-index: 1; }
+.video-deck-shell { isolation: isolate; min-height: 660px; overflow: clip; padding: 1rem 0 0; position: relative; }
+.video-deck-shell::after { background: var(--brand); bottom: 0; content: ""; height: 44%; left: 0; position: absolute; right: 0; z-index: 0; }
+.video-deck-shell > .container { position: relative; z-index: 2; }
 .video-deck { height: 570px; position: relative; }
 .video-card { background: var(--navy); border: 1px solid rgba(255,255,255,.7); border-radius: 24px; box-shadow: 0 24px 60px rgba(20,23,35,.24); cursor: pointer; height: auto; left: 50%; overflow: hidden; position: absolute; top: 28px; transition: transform 1.5s cubic-bezier(.2,.8,.2,1), filter 1.5s ease, opacity 1.5s ease, box-shadow 1.5s ease; width: min(760px,58vw); aspect-ratio: 16 / 10; }
 .video-card[data-position="0"] { filter: none; opacity: 1; transform: translateX(-50%) scale(1); z-index: 3; }
-.video-card[data-position="-1"] { filter: saturate(.72) brightness(.68); opacity: .88; transform: translateX(-98%) translateY(58px) scale(.82) rotate(-1.5deg); z-index: 1; }
-.video-card[data-position="1"] { filter: saturate(.72) brightness(.68); opacity: .88; transform: translateX(-2%) translateY(58px) scale(.82) rotate(1.5deg); z-index: 2; }
+.video-card[data-position="-1"] { filter: saturate(.72) brightness(.68); opacity: 1; transform: translateX(-98%) translateY(58px) scale(.82) rotate(-1.5deg); z-index: 1; }
+.video-card[data-position="1"] { filter: saturate(.72) brightness(.68); opacity: 1; transform: translateX(-2%) translateY(58px) scale(.82) rotate(1.5deg); z-index: 2; }
 .video-card:hover, .video-card:focus-visible { box-shadow: 0 30px 72px rgba(20,23,35,.3); outline: 3px solid rgba(255,255,255,.92); outline-offset: 4px; }
 .video-card img { height: 100%; object-fit: cover; width: 100%; }
 .video-card::after { background: rgba(12,15,25,.42); content: ""; inset: 0; position: absolute; }
