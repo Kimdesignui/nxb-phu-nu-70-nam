@@ -1,6 +1,16 @@
 (() => {
   "use strict";
 
+  const introLoader = document.querySelector("[data-intro-loader]");
+  if (introLoader) {
+    const removeIntroLoader = () => {
+      if (introLoader.isConnected) introLoader.remove();
+    };
+    introLoader.addEventListener("animationend", (event) => {
+      if (event.target === introLoader) removeIntroLoader();
+    });
+    window.setTimeout(removeIntroLoader, 3800);
+  }
   const header = document.querySelector(".site-header");
   const progress = document.querySelector(".scroll-progress");
 
