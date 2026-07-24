@@ -59,8 +59,91 @@
     counters.forEach((counter) => countObserver.observe(counter));
   }
 
-  const buttons = document.querySelectorAll("[data-filter]");
-  const awardItems = document.querySelectorAll(".award-list article[data-period]");
+  const buttons = [...document.querySelectorAll("[data-filter]")];
+  const awardList = document.querySelector(".award-list");
+  const awardItems = [...document.querySelectorAll(".award-list article[data-period]")];
+  const featuredCoverPaths = new Map([
+    [3, "assets/images/book-tu-du.jpg"],
+    [6, "assets/images/book-chernobyl.jpg"],
+    [7, "assets/images/book-co-be-nhin-mua.jpg"],
+    [10, "assets/images/book-bac-hana.jpg"]
+  ]);
+  const awardYears = [...new Set(awardItems.map((item) => item.querySelector(".award-year")?.textContent.trim()).filter(Boolean))];
+  const awardRail = document.createElement("div");
+  awardRail.className = "award-timeline-rail";
+  awardRail.setAttribute("aria-label", "Các mốc năm tác phẩm được vinh danh");
+  const yearButtons = awardYears.map((year) => {
+    const button = document.createElement("button");
+    button.className = "timeline-year-button";
+    button.type = "button";
+    button.dataset.year = year;
+    button.textContent = year;
+    awardRail.append(button);
+    return button;
+  });
+  awardList?.after(awardRail);
+
+  const activateAwardItem = (selectedItem, shouldScroll = false) => {
+    if (!selectedItem) return;
+    const selectedYear = selectedItem.querySelector(".award-year")?.textContent.trim();
+    awardItems.forEach((item) => {
+      const active = item === selectedItem;
+      item.classList.toggle("active", active);
+      item.setAttribute("aria-current", String(active));
+    });
+    yearButtons.forEach((button) => button.classList.toggle("active", button.dataset.year === selectedYear));
+    if (shouldScroll) selectedItem.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest", inline: "center" });
+  };
+
+  awardItems.forEach((item, index) => {
+    const title = item.querySelector("h4")?.textContent.trim() || "Tác phẩm được vinh danh";
+    item.tabIndex = 0;
+    item.setAttribute("role", "button");
+    item.setAttribute("aria-label", `Xem mốc ${item.querySelector(".award-year")?.textContent.trim()}: ${title}`);
+    const media = document.createElement("div");
+    media.className = "award-card-media";
+    const coverPath = featuredCoverPaths.get(index);
+    if (coverPath) {
+      const image = document.createElement("img");
+      image.src = coverPath;
+      image.alt = `Bìa sách ${title}`;
+      image.loading = "lazy";
+      media.append(image);
+    } else {
+      const placeholder = document.createElement("span");
+      placeholder.className = "award-cover-placeholder";
+      const icon = document.createElement("i");
+      icon.className = "bi bi-book";
+      icon.setAttribute("aria-hidden", "true");
+      const label = document.createElement("span");
+      label.textContent = "Bìa sách đang cập nhật";
+      placeholder.append(icon, label);
+      media.append(placeholder);
+    }
+    item.append(media);
+    item.addEventListener("click", () => activateAwardItem(item));
+    item.addEventListener("keydown", (event) => {
+      if (!["Enter", " "].includes(event.key)) return;
+      event.preventDefault();
+      activateAwardItem(item);
+    });
+
+  });
+
+  yearButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const target = awardItems.find((item) => !item.classList.contains("hidden") && item.querySelector(".award-year")?.textContent.trim() === button.dataset.year);
+      activateAwardItem(target, true);
+    });
+  });
+
+  const updateAwardRail = () => {
+    yearButtons.forEach((button) => {
+      const available = awardItems.some((item) => !item.classList.contains("hidden") && item.querySelector(".award-year")?.textContent.trim() === button.dataset.year);
+      button.classList.toggle("hidden", !available);
+    });
+  };
+
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
       const filter = button.dataset.filter;
@@ -70,8 +153,12 @@
         item.setAttribute("aria-pressed", String(active));
       });
       awardItems.forEach((item) => item.classList.toggle("hidden", filter !== "all" && item.dataset.period !== filter));
+      updateAwardRail();
+      activateAwardItem(awardItems.find((item) => !item.classList.contains("hidden")), true);
     });
   });
+  updateAwardRail();
+  activateAwardItem(awardItems[0]);
 
   const videoDeck = document.querySelector("[data-video-deck]");
   const videoCards = videoDeck ? [...videoDeck.querySelectorAll("[data-video-card]")] : [];
