@@ -13,12 +13,32 @@
   }
   const header = document.querySelector(".site-header");
   const progress = document.querySelector(".scroll-progress");
+  const scrollCue = document.querySelector("[data-scroll-cue]");
+  const storySection = document.querySelector("#cau-chuyen");
+  let scrollCueDismissed = false;
+
+  const dismissScrollCue = () => {
+    if (!scrollCue || scrollCueDismissed) return;
+    scrollCueDismissed = true;
+    scrollCue.classList.add("is-hidden");
+    scrollCue.setAttribute("aria-hidden", "true");
+    scrollCue.disabled = true;
+  };
+
+  scrollCue?.addEventListener("click", () => {
+    dismissScrollCue();
+    if (!storySection) return;
+    const offset = (header?.offsetHeight || 0) + 16;
+    const targetTop = storySection.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top: targetTop, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  });
 
   const updateScroll = () => {
     const top = window.scrollY;
     const max = document.documentElement.scrollHeight - window.innerHeight;
     header?.classList.toggle("is-scrolled", top > 18);
     if (progress) progress.style.transform = `scaleX(${max > 0 ? top / max : 0})`;
+    if (top > Math.max(120, window.innerHeight * .28)) dismissScrollCue();
   };
 
   updateScroll();
