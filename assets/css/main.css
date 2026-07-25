@@ -210,12 +210,12 @@ button { font: inherit; }
 .mission-card p { color: rgba(255,255,255,.67); margin: 0; }
 .state-honors-section { background: #f5f6fa; overflow: hidden; padding: clamp(5rem,8vw,8rem) 0; position: relative; }
 .state-honors-panel { background: #fff; border: 1px solid rgba(20,22,34,.08); border-radius: 32px; box-shadow: 0 24px 70px rgba(30,32,47,.08); overflow: hidden; padding: clamp(2.5rem,4vw,4rem); position: relative; }
-.state-honors-heading { display: block; max-width: 1020px; min-height: 330px; position: relative; z-index: 1; }
-.state-honors-number { display: block; height: auto; left: -1.5rem; opacity: .68; position: absolute; top: -1.5rem; width: clamp(19rem,25vw,24rem); z-index: 0; }
+.state-honors-heading { display: block; max-width: 1120px; min-height: 330px; position: relative; z-index: 1; }
+.state-honors-number { display: block; height: auto; left: 0; opacity: .68; position: absolute; top: -1.5rem; width: clamp(12rem,14.7vw,13.25rem); z-index: 0; }
 .state-honors-copy { margin-left: clamp(9.5rem,13vw,12.5rem); max-width: 780px; position: relative; z-index: 1; }
 .state-honors-kicker { color: var(--brand); font-size: .9375rem; font-weight: 800; letter-spacing: .1em; margin: 0; text-transform: uppercase; }
 .state-honors-heading h2 { font-size: clamp(2.5rem,4.8vw,4.75rem); letter-spacing: -.055em; line-height: .98; margin: .55rem 0 1.25rem; }
-.state-honors-description { color: var(--muted); font-size: clamp(1rem,1.5vw,1.25rem); margin: 0; max-width: 650px; }
+.state-honors-description { color: var(--muted); font-size: clamp(.9375rem,1.35vw,1.125rem); margin: 0; max-width: none; white-space: nowrap; }
 .state-honors-detail-button { align-items: center; background: var(--brand); border: 0; border-radius: 12px; box-shadow: 0 12px 28px rgba(181,14,33,.2); color: #fff; display: inline-flex; font-weight: 700; gap: .65rem; margin-top: 1.5rem; min-height: 48px; padding: .7rem 1.1rem; transition: box-shadow .2s ease, transform .2s ease; }
 .state-honors-detail-button:hover { box-shadow: 0 16px 34px rgba(181,14,33,.28); transform: translateY(-2px); }
 .state-honors-detail-button:focus-visible { outline: 3px solid rgba(215,25,45,.24); outline-offset: 4px; }
@@ -412,6 +412,7 @@ button { font: inherit; }
   .state-honors-heading { min-height: 0; }
   .state-honors-number { left: auto; opacity: .16; right: -1.25rem; top: -.5rem; width: 12rem; }
   .state-honors-copy { margin-left: 0; }
+  .state-honors-description { white-space: normal; }
   .state-honors-heading h2 br { display: none; }
   .state-honors-list { grid-template-columns: 1fr; }
   .state-honors-list::before { bottom: 0; height: auto; right: auto; width: 2px; }
