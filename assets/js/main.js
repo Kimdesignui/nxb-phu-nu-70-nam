@@ -15,18 +15,18 @@
   const progress = document.querySelector(".scroll-progress");
   const scrollCue = document.querySelector("[data-scroll-cue]");
   const storySection = document.querySelector("#cau-chuyen");
-  let scrollCueDismissed = false;
+  let scrollCueSuppressedUntilExit = false;
 
-  const dismissScrollCue = () => {
-    if (!scrollCue || scrollCueDismissed) return;
-    scrollCueDismissed = true;
-    scrollCue.classList.add("is-hidden");
-    scrollCue.setAttribute("aria-hidden", "true");
-    scrollCue.disabled = true;
+  const setScrollCueVisibility = (visible) => {
+    if (!scrollCue) return;
+    scrollCue.classList.toggle("is-hidden", !visible);
+    scrollCue.setAttribute("aria-hidden", String(!visible));
+    scrollCue.disabled = !visible;
   };
 
   scrollCue?.addEventListener("click", () => {
-    dismissScrollCue();
+    scrollCueSuppressedUntilExit = true;
+    setScrollCueVisibility(false);
     if (!storySection) return;
     const offset = (header?.offsetHeight || 0) + 16;
     const targetTop = storySection.getBoundingClientRect().top + window.scrollY - offset;
@@ -38,7 +38,10 @@
     const max = document.documentElement.scrollHeight - window.innerHeight;
     header?.classList.toggle("is-scrolled", top > 18);
     if (progress) progress.style.transform = `scaleX(${max > 0 ? top / max : 0})`;
-    if (top > Math.max(120, window.innerHeight * .28)) dismissScrollCue();
+    const headerBottom = header?.getBoundingClientRect().bottom || 0;
+    const isInHero = !storySection || storySection.getBoundingClientRect().top > headerBottom + 32;
+    if (!isInHero) scrollCueSuppressedUntilExit = false;
+    setScrollCueVisibility(isInHero && !scrollCueSuppressedUntilExit);
   };
 
   updateScroll();
