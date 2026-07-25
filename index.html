@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/main.css?v=20260725g">
+  <link rel="stylesheet" href="assets/css/main.css?v=20260725h">
 </head>
 <body>
   <div class="intro-loader" data-intro-loader aria-hidden="true">
@@ -170,19 +170,22 @@
 
     <section class="state-honors-section" id="giai-thuong-nha-nuoc">
       <div class="container page-shell">
-        <div class="state-honors-panel reveal">
+        <div class="state-honors-panel reveal" data-book-gallery="state-honors">
           <div class="state-honors-heading">
-            <span class="state-honors-symbol" aria-hidden="true">✹</span>
-            <div>
-              <p class="section-tag"><span>03</span> Giải thưởng Nhà nước</p>
-              <h2>Những dấu son trong hành trình phụng sự.</h2>
-              <p>Ba cột mốc ghi nhận những đóng góp bền bỉ của Nhà xuất bản Phụ nữ Việt Nam.</p>
+            <img class="state-honors-number" src="assets/images/state-honors-three.png" alt="" width="164" height="188" loading="lazy">
+            <div class="state-honors-copy">
+              <p class="state-honors-kicker">Gi&#7843;i th&#432;&#7903;ng Nh&#224; n&#432;&#7899;c</p>
+              <h2>Nh&#7919;ng d&#7845;u son trong<br>h&#224;nh tr&#236;nh ph&#7909;ng s&#7921;.</h2>
+              <p class="state-honors-description">Ba c&#7897;t m&#7889;c ghi nh&#7853;n nh&#7919;ng &#273;&#243;ng g&#243;p b&#7873;n b&#7881; c&#7911;a Nh&#224; xu&#7845;t b&#7843;n Ph&#7909; n&#7919; Vi&#7879;t Nam.</p>
+              <button class="state-honors-detail-button" type="button" data-gallery-open>
+                Xem chi ti&#7871;t <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+              </button>
             </div>
           </div>
           <ol class="state-honors-list">
-            <li><strong>1997</strong><span>Huân chương Độc lập hạng Ba</span></li>
-            <li><strong>2007</strong><span>Huân chương Độc lập hạng Ba</span></li>
-            <li><strong>2012</strong><span>Huân chương Độc lập hạng Ba</span></li>
+            <li><strong>1997</strong><span>Hu&#226;n ch&#432;&#417;ng &#272;&#7897;c l&#7853;p<br>h&#7841;ng Ba</span></li>
+            <li><strong>2007</strong><span>Hu&#226;n ch&#432;&#417;ng &#272;&#7897;c l&#7853;p<br>h&#7841;ng Nh&#236;</span></li>
+            <li><strong>2012</strong><span>Hu&#226;n ch&#432;&#417;ng &#272;&#7897;c l&#7853;p<br>h&#7841;ng Nh&#7845;t</span></li>
           </ol>
         </div>
       </div>
@@ -265,7 +268,7 @@
     <dialog class="book-gallery-dialog" id="bookGalleryDialog" aria-labelledby="bookGalleryTitle">
       <div class="book-gallery-shell">
         <header class="book-gallery-head">
-          <div><span>Sách đạt giải thưởng</span><h2 id="bookGalleryTitle">Thư viện ảnh sách</h2></div>
+          <div><span data-gallery-eyebrow>Sách đạt giải thưởng</span><h2 id="bookGalleryTitle">Thư viện ảnh sách</h2></div>
           <button class="book-gallery-close" type="button" data-gallery-close aria-label="Đóng thư viện ảnh"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
         </header>
         <div class="book-gallery-viewer">
@@ -302,6 +305,6 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-  <script src="assets/js/main.js?v=20260725e"></script>
+  <script src="assets/js/main.js?v=20260725f"></script>
 </body>
 </html>

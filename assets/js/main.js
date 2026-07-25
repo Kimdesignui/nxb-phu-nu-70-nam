@@ -216,6 +216,13 @@
   activateAwardItem(awardItems[0]);
 
   const bookGalleryData = {
+    "state-honors": {
+      eyebrow: "Gi\u1ea3i th\u01b0\u1edfng Nh\u00e0 n\u01b0\u1edbc",
+      title: "Nh\u1eefng th\u00e0nh t\u00edch \u0111\u00e3 \u0111\u1ea1t \u0111\u01b0\u1ee3c",
+      images: [
+        ["assets/images/state-honors-detail.png", "Ba Hu\u00e2n ch\u01b0\u01a1ng \u0110\u1ed9c l\u1eadp trao t\u1eb7ng Nh\u00e0 xu\u1ea5t b\u1ea3n Ph\u1ee5 n\u1eef Vi\u1ec7t Nam"]
+      ]
+    },
     "tu-du": {
       title: "Từ Dụ thái hậu",
       images: [
@@ -252,6 +259,7 @@
   };
   const bookGalleryDialog = document.querySelector("#bookGalleryDialog");
   const bookGalleryTitle = bookGalleryDialog?.querySelector("#bookGalleryTitle");
+  const bookGalleryEyebrow = bookGalleryDialog?.querySelector("[data-gallery-eyebrow]");
   const bookGalleryImage = bookGalleryDialog?.querySelector("[data-gallery-image]");
   const bookGalleryCaption = bookGalleryDialog?.querySelector("[data-gallery-caption]");
   const bookGalleryCounter = bookGalleryDialog?.querySelector("[data-gallery-counter]");
@@ -289,6 +297,8 @@
     activeBookGalleryIndex = 0;
     bookGalleryTrigger = trigger;
     if (bookGalleryTitle) bookGalleryTitle.textContent = gallery.title;
+    if (bookGalleryEyebrow) bookGalleryEyebrow.textContent = gallery.eyebrow || "S\u00e1ch \u0111\u1ea1t gi\u1ea3i th\u01b0\u1edfng";
+    bookGalleryDialog.classList.toggle("single-image", gallery.images.length === 1);
     bookGalleryThumbnails.replaceChildren();
     gallery.images.forEach(([source, description], index) => {
       const thumbnail = document.createElement("button");
