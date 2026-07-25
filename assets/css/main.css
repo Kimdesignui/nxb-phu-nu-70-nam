@@ -209,7 +209,7 @@ button { font: inherit; }
 @supports (backdrop-filter: blur(16px)) { .mission-card { backdrop-filter: blur(16px); } }
 .mission-card:hover { background: rgba(255,255,255,.11); transform: translateY(-5px); }
 .mission-index { color: rgba(255,255,255,.36); font-size: .9375rem; letter-spacing: .12em; position: absolute; right: 1.5rem; top: 1.5rem; }
-.mission-icon { align-items: center; background: linear-gradient(145deg,#ef4759,#ae1021); border-radius: 14px; box-shadow: 0 10px 24px rgba(130,10,27,.35); display: flex; height: 52px; justify-content: center; width: 52px; }
+.mission-icon { align-items: center; background: linear-gradient(145deg,#ef4759,#ae1021); border-radius: 14px; box-shadow: 0 10px 24px rgba(130,10,27,.35); box-sizing: border-box; display: flex; font-size: 2.25rem; height: 52px; justify-content: center; line-height: 1; padding: 8px; width: 52px; }
 .mission-card h3 { font-size: 1.45rem; font-weight: 700; margin: 4rem 0 1rem; }
 .mission-card p { color: rgba(255,255,255,.67); margin: 0; }
 .state-honors-section { background: #f5f6fa; overflow: hidden; padding: clamp(5rem,8vw,8rem) 0; position: relative; }
