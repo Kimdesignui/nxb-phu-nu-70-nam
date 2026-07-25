@@ -82,46 +82,73 @@
     counters.forEach((counter) => countObserver.observe(counter));
   }
 
-  const buttons = [...document.querySelectorAll("[data-filter]")];
   const awardList = document.querySelector(".award-list");
   const awardItems = [...document.querySelectorAll(".award-list article[data-period]")];
+  const directoryHead = document.querySelector(".directory-head");
+  const awardDirectory = document.querySelector("[data-award-directory]");
+  const awardViewTabs = [...document.querySelectorAll("[data-award-view]")];
+  const awardPeriod = document.querySelector("[data-award-period]");
+  const awardPeriodCopy = document.querySelector("[data-award-period-copy]");
+  const awardNote = document.querySelector("[data-award-note]");
   const featuredCoverPaths = new Map([
+    [0, "assets/images/award-tam-trieu-vua-ly.jpg"],
+    [1, "assets/images/award-mot-diem-tinh-hoa.jpg"],
+    [2, "assets/images/award-duoc-hoc.jpg"],
     [3, "assets/images/book-tu-du-2026.webp"],
+    [4, "assets/images/award-con-da-ve-nha.jpg"],
+    [5, "assets/images/award-giao-duc-viet-nam.jpg"],
     [6, "assets/images/book-chernobyl.jpg"],
     [7, "assets/images/book-co-be-nhin-mua-2026.webp"],
-    [10, "assets/images/book-bac-hana-2026.webp"]
+    [8, "assets/images/award-chau-phi-nghin-trung.png"],
+    [9, "assets/images/award-khai-niem-then-chot-gioi.jpg"],
+    [10, "assets/images/book-bac-hana-2026.webp"],
+    [11, "assets/images/award-uoc-vong-hoc-duong.jpg"],
+    [12, "assets/images/award-tren-dinh-gioi.jpg"],
+    [13, "assets/images/award-duong-mon-ho-chi-minh.jpg"]
   ]);
   const featuredGalleryKeys = new Map([
+    [0, "tam-trieu-vua-ly"],
+    [1, "mot-diem-tinh-hoa"],
+    [2, "duoc-hoc"],
     [3, "tu-du"],
+    [4, "con-da-ve-nha"],
+    [5, "giao-duc-viet-nam"],
     [6, "chernobyl"],
     [7, "co-be-nhin-mua"],
-    [10, "bac-hana"]
+    [8, "chau-phi-nghin-trung"],
+    [9, "khai-niem-then-chot-gioi"],
+    [10, "bac-hana"],
+    [11, "uoc-vong-hoc-duong"],
+    [12, "tren-dinh-gioi"],
+    [13, "duong-mon-ho-chi-minh"]
   ]);
-  const awardYears = [...new Set(awardItems.map((item) => item.querySelector(".award-year")?.textContent.trim()).filter(Boolean))];
   const awardRail = document.createElement("div");
   awardRail.className = "award-timeline-rail";
   awardRail.setAttribute("aria-label", "Các mốc năm tác phẩm được vinh danh");
-  const yearButtons = awardYears.map((year) => {
+  const yearButtons = awardItems.map((item, index) => {
+    const year = item.querySelector(".award-year")?.textContent.trim() || "";
+    const title = item.querySelector("h4")?.textContent.trim() || "tác phẩm";
     const button = document.createElement("button");
     button.className = "timeline-year-button";
     button.type = "button";
-    button.dataset.year = year;
+    button.dataset.itemIndex = String(index);
     button.textContent = year;
+    button.setAttribute("aria-label", `${year}: ${title}`);
     awardRail.append(button);
     return button;
   });
-  awardList?.after(awardRail);
+  directoryHead?.append(awardRail);
 
   const activateAwardItem = (selectedItem, shouldScroll = false) => {
     if (!selectedItem) return;
-    const selectedYear = selectedItem.querySelector(".award-year")?.textContent.trim();
+    const selectedIndex = awardItems.indexOf(selectedItem);
     awardItems.forEach((item) => {
       const active = item === selectedItem;
       item.classList.toggle("active", active);
       item.setAttribute("aria-current", String(active));
     });
-    yearButtons.forEach((button) => button.classList.toggle("active", button.dataset.year === selectedYear));
-    if (shouldScroll) selectedItem.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest", inline: "center" });
+    yearButtons.forEach((button, index) => button.classList.toggle("active", index === selectedIndex));
+    if (shouldScroll) yearButtons[selectedIndex]?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" });
   };
 
   awardItems.forEach((item, index) => {
@@ -185,31 +212,53 @@
 
   });
 
+  const awardCardNav = document.createElement("div");
+  awardCardNav.className = "award-card-nav";
+  const awardPrevButton = document.createElement("button");
+  awardPrevButton.type = "button";
+  awardPrevButton.setAttribute("aria-label", "Xem tác phẩm trước");
+  awardPrevButton.innerHTML = '<i class="bi bi-arrow-left" aria-hidden="true"></i>';
+  const awardNextButton = document.createElement("button");
+  awardNextButton.type = "button";
+  awardNextButton.setAttribute("aria-label", "Xem tác phẩm tiếp theo");
+  awardNextButton.innerHTML = '<i class="bi bi-arrow-right" aria-hidden="true"></i>';
+  awardCardNav.append(awardPrevButton, awardNextButton);
+  awardList?.append(awardCardNav);
+
+  const moveAwardItem = (direction) => {
+    const currentIndex = Math.max(awardItems.findIndex((item) => item.classList.contains("active")), 0);
+    const nextIndex = (currentIndex + direction + awardItems.length) % awardItems.length;
+    activateAwardItem(awardItems[nextIndex], true);
+  };
+  awardPrevButton.addEventListener("click", () => moveAwardItem(-1));
+  awardNextButton.addEventListener("click", () => moveAwardItem(1));
   yearButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      const target = awardItems.find((item) => !item.classList.contains("hidden") && item.querySelector(".award-year")?.textContent.trim() === button.dataset.year);
-      activateAwardItem(target, true);
+      activateAwardItem(awardItems[Number(button.dataset.itemIndex)], true);
     });
   });
 
   const updateAwardRail = () => {
-    yearButtons.forEach((button) => {
-      const available = awardItems.some((item) => !item.classList.contains("hidden") && item.querySelector(".award-year")?.textContent.trim() === button.dataset.year);
-      button.classList.toggle("hidden", !available);
-    });
+    yearButtons.forEach((button, index) => button.classList.toggle("hidden", awardItems[index]?.classList.contains("hidden")));
   };
 
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const filter = button.dataset.filter;
-      buttons.forEach((item) => {
-        const active = item === button;
+  awardViewTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const alltime = tab.dataset.awardView === "alltime";
+      awardViewTabs.forEach((item) => {
+        const active = item === tab;
         item.classList.toggle("active", active);
-        item.setAttribute("aria-pressed", String(active));
+        item.setAttribute("aria-selected", String(active));
       });
-      awardItems.forEach((item) => item.classList.toggle("hidden", filter !== "all" && item.dataset.period !== filter));
-      updateAwardRail();
-      activateAwardItem(awardItems.find((item) => !item.classList.contains("hidden")), true);
+      awardDirectory?.classList.toggle("is-alltime", alltime);
+      if (awardPeriod) awardPeriod.textContent = alltime ? "1957–2025" : "2017–2025";
+      if (awardPeriodCopy) awardPeriodCopy.textContent = alltime
+        ? "Toàn bộ hành trình được trình bày theo dữ liệu hiện có; các mốc trước năm 2017 đang tiếp tục bổ sung."
+        : "Các tác phẩm có thông tin và bìa sách đã được đối chiếu.";
+      if (awardNote) awardNote.textContent = alltime
+        ? "Danh mục toàn kỳ 1957–2025 đang được Nhà xuất bản tiếp tục cập nhật; hiện hiển thị các tác phẩm đã xác minh từ năm 2017."
+        : "Hiển thị các tác phẩm được vinh danh trong giai đoạn 2017–2025.";
+      activateAwardItem(awardItems[0]);
     });
   });
   updateAwardRail();
@@ -223,7 +272,46 @@
         ["assets/images/state-honors-detail.png", "Ba Hu\u00e2n ch\u01b0\u01a1ng \u0110\u1ed9c l\u1eadp trao t\u1eb7ng Nh\u00e0 xu\u1ea5t b\u1ea3n Ph\u1ee5 n\u1eef Vi\u1ec7t Nam"]
       ]
     },
-    "tu-du": {
+    "tam-trieu-vua-ly": {
+      title: "Tám triều vua Lý",
+      images: [["assets/images/award-tam-trieu-vua-ly.jpg", "Bộ sách Tám triều vua Lý"]]
+    },
+    "mot-diem-tinh-hoa": {
+      title: "Một Điểm tinh hoa",
+      images: [["assets/images/award-mot-diem-tinh-hoa.jpg", "Bìa sách Một Điểm tinh hoa"]]
+    },
+    "duoc-hoc": {
+      title: "Được học",
+      images: [["assets/images/award-duoc-hoc.jpg", "Bìa sách Được học"]]
+    },
+    "con-da-ve-nha": {
+      title: "Con đã về nhà",
+      images: [["assets/images/award-con-da-ve-nha.jpg", "Bìa sách Con đã về nhà"]]
+    },
+    "giao-duc-viet-nam": {
+      title: "Giáo dục Việt Nam học gì từ Nhật Bản",
+      images: [["assets/images/award-giao-duc-viet-nam.jpg", "Bìa sách Giáo dục Việt Nam học gì từ Nhật Bản"]]
+    },
+    "chau-phi-nghin-trung": {
+      title: "Châu Phi nghìn trùng",
+      images: [["assets/images/award-chau-phi-nghin-trung.png", "Bìa sách Châu Phi nghìn trùng"]]
+    },
+    "khai-niem-then-chot-gioi": {
+      title: "Những khái niệm then chốt giới",
+      images: [["assets/images/award-khai-niem-then-chot-gioi.jpg", "Bìa sách Những khái niệm then chốt giới"]]
+    },
+    "uoc-vong-hoc-duong": {
+      title: "Ước vọng cho học đường",
+      images: [["assets/images/award-uoc-vong-hoc-duong.jpg", "Bìa sách Ước vọng cho học đường"]]
+    },
+    "tren-dinh-gioi": {
+      title: "Trên đỉnh giời",
+      images: [["assets/images/award-tren-dinh-gioi.jpg", "Bìa sách Trên đỉnh giời"]]
+    },
+    "duong-mon-ho-chi-minh": {
+      title: "Đường mòn Hồ Chí Minh",
+      images: [["assets/images/award-duong-mon-ho-chi-minh.jpg", "Bìa sách Đường mòn Hồ Chí Minh"]]
+    },    "tu-du": {
       title: "Từ Dụ thái hậu",
       images: [
         ["assets/images/gallery-tu-du-01.webp", "Bìa Từ Dụ thái hậu, Quyển Thượng"],
