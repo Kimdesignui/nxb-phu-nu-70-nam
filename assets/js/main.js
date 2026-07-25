@@ -89,7 +89,6 @@
   const awardViewTabs = [...document.querySelectorAll("[data-award-view]")];
   const awardPeriod = document.querySelector("[data-award-period]");
   const awardPeriodCopy = document.querySelector("[data-award-period-copy]");
-  const awardNote = document.querySelector("[data-award-note]");
   const featuredCoverPaths = new Map([
     [0, "assets/images/award-tam-trieu-vua-ly.jpg"],
     [1, "assets/images/award-mot-diem-tinh-hoa.jpg"],
@@ -124,16 +123,22 @@
   ]);
   const awardRail = document.createElement("div");
   awardRail.className = "award-timeline-rail";
-  awardRail.setAttribute("aria-label", "Các mốc năm tác phẩm được vinh danh");
-  const yearButtons = awardItems.map((item, index) => {
-    const year = item.querySelector(".award-year")?.textContent.trim() || "";
-    const title = item.querySelector("h4")?.textContent.trim() || "tác phẩm";
+  awardRail.setAttribute("aria-label", "Thước thời gian tác phẩm được vinh danh");
+  const itemYears = awardItems.map((item) => Number(item.querySelector(".award-year")?.textContent.trim())).filter(Number.isFinite);
+  const firstAwardYear = Math.min(...itemYears);
+  const lastAwardYear = Math.max(...itemYears);
+  const yearButtons = Array.from({ length: lastAwardYear - firstAwardYear + 1 }, (_, index) => {
+    const year = firstAwardYear + index;
+    const hasItems = itemYears.includes(year);
     const button = document.createElement("button");
     button.className = "timeline-year-button";
+    button.classList.toggle("is-major", year === firstAwardYear || year % 5 === 0);
+    button.classList.toggle("has-items", hasItems);
     button.type = "button";
-    button.dataset.itemIndex = String(index);
-    button.textContent = year;
-    button.setAttribute("aria-label", `${year}: ${title}`);
+    button.dataset.year = String(year);
+    button.textContent = String(year);
+    button.disabled = !hasItems;
+    button.setAttribute("aria-label", hasItems ? `Xem tác phẩm năm ${year}` : `Năm ${year}, chưa có dữ liệu`);
     awardRail.append(button);
     return button;
   });
@@ -141,14 +146,16 @@
 
   const activateAwardItem = (selectedItem, shouldScroll = false) => {
     if (!selectedItem) return;
-    const selectedIndex = awardItems.indexOf(selectedItem);
+    const selectedYear = selectedItem.querySelector(".award-year")?.textContent.trim();
     awardItems.forEach((item) => {
       const active = item === selectedItem;
       item.classList.toggle("active", active);
       item.setAttribute("aria-current", String(active));
     });
-    yearButtons.forEach((button, index) => button.classList.toggle("active", index === selectedIndex));
-    if (shouldScroll) yearButtons[selectedIndex]?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" });
+    const activeYearButton = yearButtons.find((button) => button.dataset.year === selectedYear);
+    yearButtons.forEach((button) => button.classList.toggle("active", button === activeYearButton));
+    selectedItem.querySelector(".award-media-shell")?.append(awardCardNav);
+    if (shouldScroll) activeYearButton?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center", inline: "center" });
   };
 
   awardItems.forEach((item, index) => {
@@ -202,7 +209,10 @@
       });
       titleElement.replaceChildren(titleButton);
     }
-    item.append(media);
+    const mediaShell = document.createElement("div");
+    mediaShell.className = "award-media-shell";
+    mediaShell.append(media);
+    item.append(mediaShell);
     item.addEventListener("click", () => activateAwardItem(item));
     item.addEventListener("keydown", (event) => {
       if (event.target !== item || !["Enter", " "].includes(event.key)) return;
@@ -223,24 +233,55 @@
   awardNextButton.setAttribute("aria-label", "Xem tác phẩm tiếp theo");
   awardNextButton.innerHTML = '<i class="bi bi-arrow-right" aria-hidden="true"></i>';
   awardCardNav.append(awardPrevButton, awardNextButton);
-  awardList?.append(awardCardNav);
 
-  const moveAwardItem = (direction) => {
+  let awardAutoplayTimer = null;
+  let awardDirectoryInView = false;
+  const reducedAwardMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const stopAwardAutoplay = () => {
+    window.clearInterval(awardAutoplayTimer);
+    awardAutoplayTimer = null;
+  };
+  const startAwardAutoplay = () => {
+    stopAwardAutoplay();
+    if (reducedAwardMotion || !awardDirectoryInView || awardDirectory?.classList.contains("is-alltime")) return;
+    awardAutoplayTimer = window.setInterval(() => moveAwardItem(1, false), 6000);
+  };
+  const moveAwardItem = (direction, manual = true) => {
     const currentIndex = Math.max(awardItems.findIndex((item) => item.classList.contains("active")), 0);
     const nextIndex = (currentIndex + direction + awardItems.length) % awardItems.length;
     activateAwardItem(awardItems[nextIndex], true);
+    if (manual) startAwardAutoplay();
   };
   awardPrevButton.addEventListener("click", () => moveAwardItem(-1));
   awardNextButton.addEventListener("click", () => moveAwardItem(1));
   yearButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      activateAwardItem(awardItems[Number(button.dataset.itemIndex)], true);
+      const target = awardItems.find((item) => item.querySelector(".award-year")?.textContent.trim() === button.dataset.year);
+      activateAwardItem(target, true);
+      startAwardAutoplay();
     });
   });
 
   const updateAwardRail = () => {
-    yearButtons.forEach((button, index) => button.classList.toggle("hidden", awardItems[index]?.classList.contains("hidden")));
+    yearButtons.forEach((button) => {
+      button.disabled = !awardItems.some((item) => item.querySelector(".award-year")?.textContent.trim() === button.dataset.year);
+    });
   };
+
+  if ("IntersectionObserver" in window && awardDirectory) {
+    const awardAutoplayObserver = new IntersectionObserver(([entry]) => {
+      awardDirectoryInView = entry.isIntersecting;
+      if (awardDirectoryInView) startAwardAutoplay();
+      else stopAwardAutoplay();
+    }, { threshold: 0.55 });
+    awardAutoplayObserver.observe(awardDirectory);
+  }
+  awardDirectory?.addEventListener("pointerenter", stopAwardAutoplay);
+  awardDirectory?.addEventListener("pointerleave", startAwardAutoplay);
+  awardDirectory?.addEventListener("focusin", stopAwardAutoplay);
+  awardDirectory?.addEventListener("focusout", (event) => {
+    if (!awardDirectory.contains(event.relatedTarget)) startAwardAutoplay();
+  });
 
   awardViewTabs.forEach((tab) => {
     tab.addEventListener("click", () => {
@@ -253,12 +294,13 @@
       awardDirectory?.classList.toggle("is-alltime", alltime);
       if (awardPeriod) awardPeriod.textContent = alltime ? "1957–2025" : "2017–2025";
       if (awardPeriodCopy) awardPeriodCopy.textContent = alltime
-        ? "Toàn bộ hành trình được trình bày theo dữ liệu hiện có; các mốc trước năm 2017 đang tiếp tục bổ sung."
+        ? "Nội dung toàn kỳ đang được tổng hợp."
         : "Các tác phẩm có thông tin và bìa sách đã được đối chiếu.";
-      if (awardNote) awardNote.textContent = alltime
-        ? "Danh mục toàn kỳ 1957–2025 đang được Nhà xuất bản tiếp tục cập nhật; hiện hiển thị các tác phẩm đã xác minh từ năm 2017."
-        : "Hiển thị các tác phẩm được vinh danh trong giai đoạn 2017–2025.";
-      activateAwardItem(awardItems[0]);
+      if (alltime) stopAwardAutoplay();
+      else {
+        activateAwardItem(awardItems[0]);
+        startAwardAutoplay();
+      }
     });
   });
   updateAwardRail();
