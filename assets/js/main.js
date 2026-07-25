@@ -86,10 +86,10 @@
   const awardList = document.querySelector(".award-list");
   const awardItems = [...document.querySelectorAll(".award-list article[data-period]")];
   const featuredCoverPaths = new Map([
-    [3, "assets/images/book-tu-du.jpg"],
+    [3, "assets/images/book-tu-du-2026.webp"],
     [6, "assets/images/book-chernobyl.jpg"],
-    [7, "assets/images/book-co-be-nhin-mua.jpg"],
-    [10, "assets/images/book-bac-hana.jpg"]
+    [7, "assets/images/book-co-be-nhin-mua-2026.webp"],
+    [10, "assets/images/book-bac-hana-2026.webp"]
   ]);
   const awardYears = [...new Set(awardItems.map((item) => item.querySelector(".award-year")?.textContent.trim()).filter(Boolean))];
   const awardRail = document.createElement("div");
