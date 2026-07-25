@@ -325,7 +325,11 @@ button { font: inherit; }
 .award-list article.active p { color: rgba(255,255,255,.78); }
 .award-list em { align-self: flex-start; border: 1px solid var(--line); border-radius: 999px; color: #555a66; font-size: .9375rem; font-style: normal; font-weight: 650; order: 1; padding: .32rem .6rem; }
 .award-list article.active em { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.32); color: #fff; }
-.award-card-media { align-items: center; aspect-ratio: 4 / 3; background: linear-gradient(145deg,#f1f2f6,#e3e5eb); border-radius: 14px; display: flex; justify-content: center; margin-top: auto; order: 3; overflow: hidden; position: relative; }
+.award-card-media { align-items: center; aspect-ratio: 4 / 3; background: linear-gradient(145deg,#f1f2f6,#e3e5eb); border: 0; border-radius: 14px; color: inherit; display: flex; font: inherit; justify-content: center; margin-top: auto; order: 3; overflow: hidden; padding: 0; position: relative; width: 100%; }
+.award-list article.has-gallery .award-card-media, .timeline-gallery-title { cursor: zoom-in; }
+.award-list article.has-gallery .award-card-media:focus-visible, .timeline-gallery-title:focus-visible { outline: 3px solid rgba(215,25,45,.32); outline-offset: 3px; }
+.timeline-gallery-title { appearance: none; background: transparent; border: 0; color: inherit; font: inherit; font-weight: inherit; padding: 0; text-align: left; }
+.timeline-gallery-title:hover { text-decoration: underline; text-underline-offset: 3px; }
 .award-card-media img { height: 100%; object-fit: cover; transition: transform .35s ease; width: 100%; }
 .award-list article:hover .award-card-media img, .award-list article.active .award-card-media img { transform: scale(1.035); }
 .award-cover-placeholder { align-items: center; color: #777d8b; display: flex; flex-direction: column; font-size: .9375rem; font-weight: 600; gap: .55rem; padding: 1rem; text-align: center; }

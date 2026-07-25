@@ -91,6 +91,12 @@
     [7, "assets/images/book-co-be-nhin-mua-2026.webp"],
     [10, "assets/images/book-bac-hana-2026.webp"]
   ]);
+  const featuredGalleryKeys = new Map([
+    [3, "tu-du"],
+    [6, "chernobyl"],
+    [7, "co-be-nhin-mua"],
+    [10, "bac-hana"]
+  ]);
   const awardYears = [...new Set(awardItems.map((item) => item.querySelector(".award-year")?.textContent.trim()).filter(Boolean))];
   const awardRail = document.createElement("div");
   awardRail.className = "award-timeline-rail";
@@ -119,13 +125,26 @@
   };
 
   awardItems.forEach((item, index) => {
-    const title = item.querySelector("h4")?.textContent.trim() || "Tác phẩm được vinh danh";
+    const titleElement = item.querySelector("h4");
+    const title = titleElement?.textContent.trim() || "Tác phẩm được vinh danh";
+    const year = item.querySelector(".award-year")?.textContent.trim();
+    const galleryKey = featuredGalleryKeys.get(index);
     item.tabIndex = 0;
-    item.setAttribute("role", "button");
-    item.setAttribute("aria-label", `Xem mốc ${item.querySelector(".award-year")?.textContent.trim()}: ${title}`);
-    const media = document.createElement("div");
+    item.setAttribute("role", galleryKey ? "group" : "button");
+    item.setAttribute("aria-label", galleryKey ? `Mốc ${year}: ${title}. Có thư viện ảnh` : `Xem mốc ${year}: ${title}`);
+    if (galleryKey) item.classList.add("has-gallery");
+    const media = document.createElement(galleryKey ? "button" : "div");
     media.className = "award-card-media";
     const coverPath = featuredCoverPaths.get(index);
+    if (galleryKey) {
+      media.type = "button";
+      media.dataset.galleryOpen = "";
+      media.setAttribute("aria-label", `Xem thư viện ảnh sách ${title}`);
+      media.addEventListener("click", (event) => {
+        event.stopPropagation();
+        openBookGallery(galleryKey, media);
+      });
+    }
     if (coverPath) {
       const image = document.createElement("img");
       image.src = coverPath;
@@ -143,10 +162,23 @@
       placeholder.append(icon, label);
       media.append(placeholder);
     }
+    if (galleryKey && titleElement) {
+      const titleButton = document.createElement("button");
+      titleButton.className = "timeline-gallery-title";
+      titleButton.type = "button";
+      titleButton.dataset.galleryOpen = "";
+      titleButton.textContent = title;
+      titleButton.setAttribute("aria-label", `Xem thư viện ảnh sách ${title}`);
+      titleButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        openBookGallery(galleryKey, titleButton);
+      });
+      titleElement.replaceChildren(titleButton);
+    }
     item.append(media);
     item.addEventListener("click", () => activateAwardItem(item));
     item.addEventListener("keydown", (event) => {
-      if (!["Enter", " "].includes(event.key)) return;
+      if (event.target !== item || !["Enter", " "].includes(event.key)) return;
       event.preventDefault();
       activateAwardItem(item);
     });
