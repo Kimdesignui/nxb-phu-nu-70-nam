@@ -183,6 +183,138 @@
   updateAwardRail();
   activateAwardItem(awardItems[0]);
 
+  const bookGalleryData = {
+    "tu-du": {
+      title: "Từ Dụ thái hậu",
+      images: [
+        ["assets/images/gallery-tu-du-01.webp", "Bìa Từ Dụ thái hậu, Quyển Thượng"],
+        ["assets/images/gallery-tu-du-02.webp", "Bìa Từ Dụ thái hậu, Quyển Hạ"],
+        ["assets/images/gallery-tu-du-03.webp", "Bộ sách Từ Dụ thái hậu bên bộ ấm trà"],
+        ["assets/images/gallery-tu-du-04.webp", "Hai quyển Từ Dụ thái hậu được trưng bày"]
+      ]
+    },
+    "chernobyl": {
+      title: "Lời nguyện cầu Chernobyl",
+      images: [
+        ["assets/images/gallery-chernobyl-01.webp", "Bìa sách Lời nguyện cầu Chernobyl"],
+        ["assets/images/gallery-chernobyl-02.webp", "Sách Lời nguyện cầu Chernobyl được giới thiệu ngoài trời"]
+      ]
+    },
+    "co-be-nhin-mua": {
+      title: "Cô bé nhìn mưa",
+      images: [
+        ["assets/images/gallery-co-be-nhin-mua-01.webp", "Bìa sách Cô bé nhìn mưa"],
+        ["assets/images/gallery-co-be-nhin-mua-02.webp", "Mô hình sách Cô bé nhìn mưa"],
+        ["assets/images/gallery-co-be-nhin-mua-03.webp", "Bìa trước, gáy và bìa sau sách Cô bé nhìn mưa"]
+      ]
+    },
+    "bac-hana": {
+      title: "Bác Hana",
+      images: [
+        ["assets/images/gallery-bac-hana-01.webp", "Bìa sách Bác Hana"],
+        ["assets/images/gallery-bac-hana-02.webp", "Sách Bác Hana trên bàn gỗ cùng hoa khô"],
+        ["assets/images/gallery-bac-hana-03.webp", "Sách Bác Hana bên hoa đồng tiền hồng"],
+        ["assets/images/gallery-bac-hana-04.webp", "Sách Bác Hana trên nền vải đỏ"]
+      ]
+    }
+  };
+  const bookGalleryDialog = document.querySelector("#bookGalleryDialog");
+  const bookGalleryTitle = bookGalleryDialog?.querySelector("#bookGalleryTitle");
+  const bookGalleryImage = bookGalleryDialog?.querySelector("[data-gallery-image]");
+  const bookGalleryCaption = bookGalleryDialog?.querySelector("[data-gallery-caption]");
+  const bookGalleryCounter = bookGalleryDialog?.querySelector("[data-gallery-counter]");
+  const bookGalleryThumbnails = bookGalleryDialog?.querySelector("[data-gallery-thumbnails]");
+  let activeBookGallery = null;
+  let activeBookGalleryIndex = 0;
+  let bookGalleryTrigger = null;
+  let bookGalleryPointerStart = null;
+
+  const renderBookGallery = () => {
+    if (!activeBookGallery || !bookGalleryImage) return;
+    const [source, description] = activeBookGallery.images[activeBookGalleryIndex];
+    bookGalleryImage.src = source;
+    bookGalleryImage.alt = description;
+    if (bookGalleryCaption) bookGalleryCaption.textContent = description;
+    if (bookGalleryCounter) bookGalleryCounter.textContent = `Ảnh ${activeBookGalleryIndex + 1} / ${activeBookGallery.images.length}`;
+    bookGalleryThumbnails?.querySelectorAll(".book-gallery-thumb").forEach((thumbnail, index) => {
+      const active = index === activeBookGalleryIndex;
+      thumbnail.classList.toggle("active", active);
+      thumbnail.setAttribute("aria-current", String(active));
+      if (active) thumbnail.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+    });
+  };
+
+  const moveBookGallery = (direction) => {
+    if (!activeBookGallery) return;
+    activeBookGalleryIndex = (activeBookGalleryIndex + direction + activeBookGallery.images.length) % activeBookGallery.images.length;
+    renderBookGallery();
+  };
+
+  const openBookGallery = (key, trigger) => {
+    const gallery = bookGalleryData[key];
+    if (!gallery || !bookGalleryDialog || !bookGalleryThumbnails) return;
+    activeBookGallery = gallery;
+    activeBookGalleryIndex = 0;
+    bookGalleryTrigger = trigger;
+    if (bookGalleryTitle) bookGalleryTitle.textContent = gallery.title;
+    bookGalleryThumbnails.replaceChildren();
+    gallery.images.forEach(([source, description], index) => {
+      const thumbnail = document.createElement("button");
+      thumbnail.className = "book-gallery-thumb";
+      thumbnail.type = "button";
+      thumbnail.setAttribute("aria-label", `Xem ảnh ${index + 1}: ${description}`);
+      const image = document.createElement("img");
+      image.src = source;
+      image.alt = "";
+      image.loading = "lazy";
+      thumbnail.append(image);
+      thumbnail.addEventListener("click", () => {
+        activeBookGalleryIndex = index;
+        renderBookGallery();
+      });
+      bookGalleryThumbnails.append(thumbnail);
+    });
+    renderBookGallery();
+    bookGalleryDialog.showModal();
+  };
+
+  document.querySelectorAll("[data-book-gallery]").forEach((card) => {
+    card.querySelectorAll("[data-gallery-open]").forEach((trigger) => {
+      trigger.addEventListener("click", () => openBookGallery(card.dataset.bookGallery, trigger));
+    });
+  });
+  bookGalleryDialog?.querySelector("[data-gallery-close]")?.addEventListener("click", () => bookGalleryDialog.close());
+  bookGalleryDialog?.querySelector("[data-gallery-prev]")?.addEventListener("click", () => moveBookGallery(-1));
+  bookGalleryDialog?.querySelector("[data-gallery-next]")?.addEventListener("click", () => moveBookGallery(1));
+  bookGalleryDialog?.addEventListener("click", (event) => {
+    if (event.target === bookGalleryDialog) bookGalleryDialog.close();
+  });
+  bookGalleryDialog?.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft") moveBookGallery(-1);
+    if (event.key === "ArrowRight") moveBookGallery(1);
+    if (event.key === "Home" && activeBookGallery) {
+      activeBookGalleryIndex = 0;
+      renderBookGallery();
+    }
+    if (event.key === "End" && activeBookGallery) {
+      activeBookGalleryIndex = activeBookGallery.images.length - 1;
+      renderBookGallery();
+    }
+  });
+  bookGalleryDialog?.addEventListener("close", () => {
+    bookGalleryImage?.removeAttribute("src");
+    bookGalleryTrigger?.focus();
+  });
+  bookGalleryDialog?.querySelector(".book-gallery-frame")?.addEventListener("pointerdown", (event) => {
+    bookGalleryPointerStart = event.clientX;
+  });
+  bookGalleryDialog?.querySelector(".book-gallery-frame")?.addEventListener("pointerup", (event) => {
+    if (bookGalleryPointerStart === null) return;
+    const distance = event.clientX - bookGalleryPointerStart;
+    bookGalleryPointerStart = null;
+    if (Math.abs(distance) > 45) moveBookGallery(distance > 0 ? -1 : 1);
+  });
+
   const videoDeck = document.querySelector("[data-video-deck]");
   const videoCards = videoDeck ? [...videoDeck.querySelectorAll("[data-video-card]")] : [];
   const videoFeedback = document.querySelector("[data-video-feedback]");

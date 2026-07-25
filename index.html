@@ -233,10 +233,10 @@
         </div>
 
         <div class="book-grid">
-          <article class="book-card reveal"><div class="book-stage stage-red"><img src="assets/images/book-tu-du-2026.webp" alt="Bìa bộ tiểu thuyết Từ Dụ thái hậu" loading="lazy" width="1798" height="1734"><span>Giải Nhất</span></div><div class="book-meta"><small>2020 · Hội Nhà văn Việt Nam</small><h3>Từ Dụ thái hậu</h3><p>Trần Thùy Mai · Bộ tiểu thuyết 2 tập</p></div></article>
-          <article class="book-card reveal"><div class="book-stage stage-blue"><img src="assets/images/book-chernobyl.jpg" alt="Bìa sách Lời nguyện cầu Chernobyl" loading="lazy" width="600" height="900"><span>Văn học dịch</span></div><div class="book-meta"><small>2020 · Hội Nhà văn Việt Nam</small><h3>Lời nguyện cầu Chernobyl</h3><p>Phạm Ngọc Thạch · Nguyễn Bích Lan dịch</p></div></article>
-          <article class="book-card reveal"><div class="book-stage stage-violet"><img src="assets/images/book-co-be-nhin-mua-2026.webp" alt="Bìa sách Cô bé nhìn mưa" loading="lazy" width="1878" height="2851"><span>Giải B</span></div><div class="book-meta"><small>2021 · Sách Quốc gia</small><h3>Cô bé nhìn mưa</h3><p>Hồi ức · PGS.TS. Đặng Thị Hạnh</p></div></article>
-          <article class="book-card reveal"><div class="book-stage stage-gold"><img src="assets/images/book-bac-hana-2026.webp" alt="Bìa sách Bác Hana" loading="lazy" width="948" height="1395"><span>Giải B</span></div><div class="book-meta"><small>2024 · Sách Quốc gia</small><h3>Bác Hana</h3><p>Bình Slavicka dịch</p></div></article>
+          <article class="book-card reveal" data-book-gallery="tu-du"><button class="book-stage stage-red" type="button" data-gallery-open aria-label="Xem thư viện ảnh sách Từ Dụ thái hậu"><img src="assets/images/book-tu-du-2026.webp" alt="Bìa bộ tiểu thuyết Từ Dụ thái hậu" loading="lazy" width="1798" height="1734"><span>Giải Nhất</span></button><div class="book-meta"><small>2020 · Hội Nhà văn Việt Nam</small><h3><button class="book-title-trigger" type="button" data-gallery-open>Từ Dụ thái hậu</button></h3><p>Trần Thùy Mai · Bộ tiểu thuyết 2 tập</p></div></article>
+          <article class="book-card reveal" data-book-gallery="chernobyl"><button class="book-stage stage-blue" type="button" data-gallery-open aria-label="Xem thư viện ảnh sách Lời nguyện cầu Chernobyl"><img src="assets/images/book-chernobyl.jpg" alt="Bìa sách Lời nguyện cầu Chernobyl" loading="lazy" width="600" height="900"><span>Văn học dịch</span></button><div class="book-meta"><small>2020 · Hội Nhà văn Việt Nam</small><h3><button class="book-title-trigger" type="button" data-gallery-open>Lời nguyện cầu Chernobyl</button></h3><p>Phạm Ngọc Thạch · Nguyễn Bích Lan dịch</p></div></article>
+          <article class="book-card reveal" data-book-gallery="co-be-nhin-mua"><button class="book-stage stage-violet" type="button" data-gallery-open aria-label="Xem thư viện ảnh sách Cô bé nhìn mưa"><img src="assets/images/book-co-be-nhin-mua-2026.webp" alt="Bìa sách Cô bé nhìn mưa" loading="lazy" width="1878" height="2851"><span>Giải B</span></button><div class="book-meta"><small>2021 · Sách Quốc gia</small><h3><button class="book-title-trigger" type="button" data-gallery-open>Cô bé nhìn mưa</button></h3><p>Hồi ức · PGS.TS. Đặng Thị Hạnh</p></div></article>
+          <article class="book-card reveal" data-book-gallery="bac-hana"><button class="book-stage stage-gold" type="button" data-gallery-open aria-label="Xem thư viện ảnh sách Bác Hana"><img src="assets/images/book-bac-hana-2026.webp" alt="Bìa sách Bác Hana" loading="lazy" width="948" height="1395"><span>Giải B</span></button><div class="book-meta"><small>2024 · Sách Quốc gia</small><h3><button class="book-title-trigger" type="button" data-gallery-open>Bác Hana</button></h3><p>Bình Slavicka dịch</p></div></article>
         </div>
 
         <div class="award-directory reveal">
@@ -262,6 +262,24 @@
       </div>
     </section>
 
+    <dialog class="book-gallery-dialog" id="bookGalleryDialog" aria-labelledby="bookGalleryTitle">
+      <div class="book-gallery-shell">
+        <header class="book-gallery-head">
+          <div><span>Sách đạt giải thưởng</span><h2 id="bookGalleryTitle">Thư viện ảnh sách</h2></div>
+          <button class="book-gallery-close" type="button" data-gallery-close aria-label="Đóng thư viện ảnh"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+        </header>
+        <div class="book-gallery-viewer">
+          <button class="book-gallery-nav book-gallery-prev" type="button" data-gallery-prev aria-label="Xem ảnh trước"><i class="bi bi-chevron-left" aria-hidden="true"></i></button>
+          <figure class="book-gallery-frame"><img src="" alt="" data-gallery-image><figcaption class="visually-hidden" data-gallery-caption></figcaption></figure>
+          <button class="book-gallery-nav book-gallery-next" type="button" data-gallery-next aria-label="Xem ảnh tiếp theo"><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+        </div>
+        <footer class="book-gallery-footer">
+          <p data-gallery-counter aria-live="polite">Ảnh 1 / 1</p>
+          <div class="book-gallery-thumbnails" data-gallery-thumbnails aria-label="Chọn ảnh trong thư viện"></div>
+        </footer>
+      </div>
+    </dialog>
+
     <section class="closing-section">
       <div class="container page-shell">
         <div class="closing-panel reveal">
@@ -284,6 +302,6 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-  <script src="assets/js/main.js?v=20260725c"></script>
+  <script src="assets/js/main.js?v=20260725d"></script>
 </body>
 </html>
