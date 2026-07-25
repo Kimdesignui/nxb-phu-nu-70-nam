@@ -206,21 +206,27 @@ button { font: inherit; }
 .mission-section .intro-lead { color: rgba(255,255,255,.67); }
 .mission-cards { position: relative; }
 .mission-card { background: rgba(255,255,255,.075); border: 1px solid rgba(255,255,255,.14); border-radius: 22px; height: 100%; min-height: 350px; padding: 1.75rem; position: relative; transition: transform .2s ease, background .2s ease; }
-@supports (backdrop-filter: blur(16px)) { .mission-card, .state-awards { backdrop-filter: blur(16px); } }
+@supports (backdrop-filter: blur(16px)) { .mission-card { backdrop-filter: blur(16px); } }
 .mission-card:hover { background: rgba(255,255,255,.11); transform: translateY(-5px); }
 .mission-index { color: rgba(255,255,255,.36); font-size: .9375rem; letter-spacing: .12em; position: absolute; right: 1.5rem; top: 1.5rem; }
 .mission-icon { align-items: center; background: linear-gradient(145deg,#ef4759,#ae1021); border-radius: 14px; box-shadow: 0 10px 24px rgba(130,10,27,.35); display: flex; height: 52px; justify-content: center; width: 52px; }
 .mission-card h3 { font-size: 1.45rem; font-weight: 700; margin: 4rem 0 1rem; }
 .mission-card p { color: rgba(255,255,255,.67); margin: 0; }
-.state-awards { align-items: center; background: rgba(255,255,255,.075); border: 1px solid rgba(255,255,255,.14); border-radius: 22px; display: grid; gap: 2rem; grid-template-columns: .75fr 1.25fr; margin-top: 1.25rem; padding: 1.4rem; }
-.state-awards-heading { align-items: center; display: flex; gap: 1rem; }
-.state-awards-heading > span { align-items: center; background: #fff; border-radius: 50%; color: var(--brand); display: flex; height: 48px; justify-content: center; width: 48px; }
-.state-awards-heading strong, .state-awards-heading small { display: block; }
-.state-awards-heading small { color: rgba(255,255,255,.58); font-size: .9375rem; }
-.state-awards ul { display: grid; gap: .6rem; grid-template-columns: repeat(3,1fr); list-style: none; margin: 0; padding: 0; }
-.state-awards li { border-left: 1px solid rgba(255,255,255,.16); padding-left: 1rem; }
-.state-awards li strong, .state-awards li span { display: block; }
-.state-awards li span { color: rgba(255,255,255,.58); font-size: .9375rem; }
+.state-honors-section { background: #f5f6fa; overflow: hidden; padding: clamp(5rem,8vw,8rem) 0; position: relative; }
+.state-honors-panel { background: #fff; border: 1px solid rgba(20,22,34,.08); border-radius: 32px; box-shadow: 0 24px 70px rgba(30,32,47,.08); overflow: hidden; padding: clamp(2rem,4vw,4rem); position: relative; }
+.state-honors-panel::after { color: rgba(215,25,45,.045); content: "✹"; font-size: clamp(15rem,28vw,28rem); line-height: 1; pointer-events: none; position: absolute; right: -4rem; top: -8rem; }
+.state-honors-heading { align-items: flex-start; display: grid; gap: 1.5rem; grid-template-columns: auto minmax(0,1fr); max-width: 850px; position: relative; z-index: 1; }
+.state-honors-symbol { align-items: center; background: linear-gradient(145deg,#ef4759,#b10f22); border-radius: 20px; box-shadow: 0 14px 30px rgba(181,14,33,.22); color: #fff; display: flex; font-size: 1.55rem; height: 64px; justify-content: center; width: 64px; }
+.state-honors-heading h2 { font-size: clamp(2.25rem,4.8vw,4.75rem); letter-spacing: -.055em; line-height: .98; margin: 1rem 0 1.25rem; max-width: 760px; }
+.state-honors-heading > div > p:last-child { color: var(--muted); font-size: clamp(1rem,1.5vw,1.25rem); margin: 0; max-width: 650px; }
+.state-honors-list { display: grid; gap: 1px; grid-template-columns: repeat(3,1fr); list-style: none; margin: clamp(2.5rem,5vw,5rem) 0 0; padding: 0; position: relative; z-index: 1; }
+.state-honors-list::before { background: linear-gradient(90deg,var(--brand),rgba(215,25,45,.12)); content: ""; height: 2px; left: 0; position: absolute; right: 0; top: 0; }
+.state-honors-list li { min-height: 190px; padding: 2rem clamp(1rem,2vw,2rem) 1rem; position: relative; }
+.state-honors-list li + li { border-left: 1px solid rgba(20,22,34,.09); }
+.state-honors-list li::before { background: #fff; border: 4px solid var(--brand); border-radius: 50%; content: ""; height: 16px; left: clamp(1rem,2vw,2rem); position: absolute; top: -7px; width: 16px; }
+.state-honors-list strong, .state-honors-list span { display: block; }
+.state-honors-list strong { color: var(--brand); font-size: clamp(2.5rem,5vw,5rem); font-weight: 800; letter-spacing: -.06em; line-height: 1; }
+.state-honors-list span { color: var(--ink); font-size: clamp(1rem,1.5vw,1.2rem); font-weight: 650; margin-top: 1rem; max-width: 230px; }
 
 .video-section { background: #fff; overflow: hidden; padding: clamp(6.5rem,9vw,9rem) 0 0; position: relative; }
 .video-section .section-intro-row h2 { font-size: clamp(2.25rem,3.3vw,3.5rem); line-height: 1.04; }
@@ -341,7 +347,7 @@ button { font: inherit; }
   .story-layout { grid-template-columns: 1fr; }
   .story-gallery { display: flex; gap: 1rem; min-height: 0; overflow-x: auto; overscroll-behavior-inline: contain; padding: 0 0 1rem; scroll-padding-inline: 1rem; scroll-snap-type: x mandatory; }
   .story-gallery figure, .story-gallery .gallery-large { aspect-ratio: 16 / 10; flex: 0 0 min(76vw,620px); grid-row: auto; scroll-snap-align: start; }
-  .journey-panel, .state-awards { grid-template-columns: 1fr; }
+  .journey-panel { grid-template-columns: 1fr; }
   .hero-glow { filter: blur(36px); opacity: .42; }
   .hero-glow-a { height: 430px; right: -250px; top: 180px; width: 430px; }
   .hero-glow-b { height: 300px; left: -210px; top: 62%; width: 300px; }
@@ -362,8 +368,14 @@ button { font: inherit; }
   .quick-stats dd { font-size: .9375rem; }
   .bento-grid { grid-template-columns: 1fr; }
   .bento-wide { grid-column: auto; }
-  .state-awards ul { grid-template-columns: 1fr; }
-  .state-awards li { border-left: 0; border-top: 1px solid rgba(255,255,255,.14); padding: .65rem 0 0; }
+  .state-honors-panel { border-radius: 24px; padding: 1.5rem; }
+  .state-honors-heading { grid-template-columns: 1fr; }
+  .state-honors-symbol { border-radius: 16px; height: 52px; width: 52px; }
+  .state-honors-list { grid-template-columns: 1fr; }
+  .state-honors-list::before { bottom: 0; height: auto; right: auto; width: 2px; }
+  .state-honors-list li { min-height: 0; padding: 1.5rem 0 1.5rem 2rem; }
+  .state-honors-list li + li { border-left: 0; border-top: 1px solid rgba(20,22,34,.09); }
+  .state-honors-list li::before { left: -7px; top: 1.75rem; }
   .award-list { scroll-padding-inline: 1rem; }
   .award-list article, .award-list article.active { flex-basis: min(84vw,330px); min-height: 480px; padding: 1.25rem; scroll-snap-align: center; }
   .award-filters { max-width: 100%; overflow: visible; padding-bottom: 0; }
