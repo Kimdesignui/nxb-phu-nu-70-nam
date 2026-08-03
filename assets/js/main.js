@@ -147,6 +147,9 @@
   const activateAwardItem = (selectedItem, shouldScroll = false) => {
     if (!selectedItem) return;
     const selectedYear = selectedItem.querySelector(".award-year")?.textContent.trim();
+    const selectedIndex = awardItems.indexOf(selectedItem);
+    const sameYearItems = awardItems.filter((item) => item.querySelector(".award-year")?.textContent.trim() === selectedYear);
+    const sameYearIndex = sameYearItems.indexOf(selectedItem);
     awardItems.forEach((item) => {
       const active = item === selectedItem;
       item.classList.toggle("active", active);
@@ -155,6 +158,14 @@
     const activeYearButton = yearButtons.find((button) => button.dataset.year === selectedYear);
     yearButtons.forEach((button) => button.classList.toggle("active", button === activeYearButton));
     selectedItem.querySelector(".award-media-shell")?.append(awardCardNav);
+    awardNavPosition.textContent = `${String(selectedIndex + 1).padStart(2, "0")} / ${String(awardItems.length).padStart(2, "0")}`;
+    awardNavContext.textContent = sameYearItems.length > 1
+      ? `Năm ${selectedYear} · Tác phẩm ${sameYearIndex + 1}/${sameYearItems.length}`
+      : `Mốc năm ${selectedYear}`;
+    awardPrevButton.disabled = selectedIndex === 0;
+    awardNextButton.disabled = selectedIndex === awardItems.length - 1;
+    awardPrevButton.setAttribute("aria-label", selectedIndex > 0 ? `Xem tác phẩm trước, mốc ${itemYears[selectedIndex - 1]}` : "Đang ở tác phẩm đầu tiên");
+    awardNextButton.setAttribute("aria-label", selectedIndex < awardItems.length - 1 ? `Xem tác phẩm tiếp theo, mốc ${itemYears[selectedIndex + 1]}` : "Đang ở tác phẩm cuối cùng");
     if (shouldScroll) activeYearButton?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center", inline: "center" });
   };
 
@@ -213,7 +224,10 @@
     mediaShell.className = "award-media-shell";
     mediaShell.append(media);
     item.append(mediaShell);
-    item.addEventListener("click", () => activateAwardItem(item));
+    item.addEventListener("click", (event) => {
+      if (event.target.closest("button")) return;
+      activateAwardItem(item);
+    });
     item.addEventListener("keydown", (event) => {
       if (event.target !== item || !["Enter", " "].includes(event.key)) return;
       event.preventDefault();
@@ -224,15 +238,34 @@
 
   const awardCardNav = document.createElement("div");
   awardCardNav.className = "award-card-nav";
+  awardCardNav.setAttribute("aria-live", "polite");
+  const awardNavMeta = document.createElement("p");
+  awardNavMeta.className = "award-card-nav-meta";
+  const awardNavPosition = document.createElement("span");
+  const awardNavContext = document.createElement("strong");
+  awardNavMeta.append(awardNavPosition, awardNavContext);
+  const awardNavControls = document.createElement("div");
+  awardNavControls.className = "award-card-nav-controls";
   const awardPrevButton = document.createElement("button");
   awardPrevButton.type = "button";
+  awardPrevButton.dataset.awardPrev = "";
   awardPrevButton.setAttribute("aria-label", "Xem tác phẩm trước");
-  awardPrevButton.innerHTML = '<i class="bi bi-arrow-left" aria-hidden="true"></i>';
+  const awardPrevIcon = document.createElement("img");
+  awardPrevIcon.src = "assets/icons/arrow-left.svg";
+  awardPrevIcon.alt = "";
+  awardPrevIcon.setAttribute("aria-hidden", "true");
+  awardPrevButton.append(awardPrevIcon);
   const awardNextButton = document.createElement("button");
   awardNextButton.type = "button";
+  awardNextButton.dataset.awardNext = "";
   awardNextButton.setAttribute("aria-label", "Xem tác phẩm tiếp theo");
-  awardNextButton.innerHTML = '<i class="bi bi-arrow-right" aria-hidden="true"></i>';
-  awardCardNav.append(awardPrevButton, awardNextButton);
+  const awardNextIcon = document.createElement("img");
+  awardNextIcon.src = "assets/icons/arrow-right.svg";
+  awardNextIcon.alt = "";
+  awardNextIcon.setAttribute("aria-hidden", "true");
+  awardNextButton.append(awardNextIcon);
+  awardNavControls.append(awardPrevButton, awardNextButton);
+  awardCardNav.append(awardNavMeta, awardNavControls);
 
   let awardAutoplayTimer = null;
   let awardDirectoryInView = false;
@@ -248,12 +281,26 @@
   };
   const moveAwardItem = (direction, manual = true) => {
     const currentIndex = Math.max(awardItems.findIndex((item) => item.classList.contains("active")), 0);
-    const nextIndex = (currentIndex + direction + awardItems.length) % awardItems.length;
+    const nextIndex = manual
+      ? Math.min(Math.max(currentIndex + direction, 0), awardItems.length - 1)
+      : (currentIndex + direction + awardItems.length) % awardItems.length;
+    if (nextIndex === currentIndex) return;
     activateAwardItem(awardItems[nextIndex], true);
     if (manual) startAwardAutoplay();
   };
-  awardPrevButton.addEventListener("click", () => moveAwardItem(-1));
-  awardNextButton.addEventListener("click", () => moveAwardItem(1));
+  awardPrevButton.addEventListener("click", (event) => {
+    event.stopPropagation();
+    moveAwardItem(-1);
+  });
+  awardNextButton.addEventListener("click", (event) => {
+    event.stopPropagation();
+    moveAwardItem(1);
+  });
+  awardDirectory?.addEventListener("keydown", (event) => {
+    if (awardDirectory.classList.contains("is-alltime") || !["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+    event.preventDefault();
+    moveAwardItem(event.key === "ArrowLeft" ? -1 : 1);
+  });
   yearButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const target = awardItems.find((item) => item.querySelector(".award-year")?.textContent.trim() === button.dataset.year);
