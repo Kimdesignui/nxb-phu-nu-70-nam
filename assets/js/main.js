@@ -21,7 +21,7 @@
     { element: document.querySelector("#cau-chuyen"), hash: "#cau-chuyen" },
     { element: document.querySelector("#dau-an"), hash: "#dau-an" },
     { element: document.querySelector("#su-menh"), hash: "#su-menh" },
-    { element: document.querySelector("#giai-thuong-nha-nuoc"), hash: "#giai-thuong" },
+    { element: document.querySelector("#giai-thuong-nha-nuoc"), hash: "#giai-thuong-nha-nuoc" },
     { element: document.querySelector("#video"), hash: "#video" },
     { element: document.querySelector("#giai-thuong"), hash: "#giai-thuong" }
   ].filter((marker) => marker.element);
@@ -166,7 +166,7 @@
     const hasItems = itemYears.includes(year);
     const button = document.createElement("button");
     button.className = "timeline-year-button";
-    button.classList.toggle("is-major", year === firstAwardYear || year % 5 === 0);
+    button.classList.toggle("is-major", year % 5 === 0);
     button.classList.toggle("has-items", hasItems);
     button.type = "button";
     button.dataset.year = String(year);
@@ -177,6 +177,19 @@
     return button;
   });
   directoryHead?.append(awardRail);
+
+  const scrollAwardRailTo = (button) => {
+    if (!button) return;
+    const behavior = matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    const horizontal = awardRail.scrollWidth > awardRail.clientWidth && awardRail.scrollHeight <= awardRail.clientHeight + 4;
+    if (horizontal) {
+      const left = button.offsetLeft - (awardRail.clientWidth - button.offsetWidth) / 2;
+      awardRail.scrollTo({ left: Math.max(0, left), behavior });
+      return;
+    }
+    const top = button.offsetTop - (awardRail.clientHeight - button.offsetHeight) / 2;
+    awardRail.scrollTo({ top: Math.max(0, top), behavior });
+  };
 
   const activateAwardItem = (selectedItem, shouldScroll = false) => {
     if (!selectedItem) return;
@@ -200,7 +213,7 @@
     awardNextButton.disabled = selectedIndex === awardItems.length - 1;
     awardPrevButton.setAttribute("aria-label", selectedIndex > 0 ? `Xem tác phẩm trước, mốc ${itemYears[selectedIndex - 1]}` : "Đang ở tác phẩm đầu tiên");
     awardNextButton.setAttribute("aria-label", selectedIndex < awardItems.length - 1 ? `Xem tác phẩm tiếp theo, mốc ${itemYears[selectedIndex + 1]}` : "Đang ở tác phẩm cuối cùng");
-    if (shouldScroll) activeYearButton?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center", inline: "center" });
+    if (shouldScroll) scrollAwardRailTo(activeYearButton);
   };
 
   awardItems.forEach((item, index) => {
