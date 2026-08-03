@@ -299,7 +299,7 @@ button { font: inherit; }
 .book-gallery-thumb { aspect-ratio: 1; background: #f1f2f5; border: 0; border-radius: 10px; flex: 0 0 58px; overflow: hidden; padding: 0; }
 .book-gallery-thumb img { height: 100%; object-fit: contain; width: 100%; }
 .book-gallery-thumb:hover, .book-gallery-thumb:focus-visible, .book-gallery-thumb.active { box-shadow: inset 0 0 0 3px var(--brand); outline: 0; }
-.award-directory-heading { align-items: flex-end; display: flex; gap: 2rem; justify-content: space-between; margin-top: 5rem; }
+.award-directory-heading { align-items: flex-end; display: flex; gap: 2rem; justify-content: space-between; margin-top: clamp(2.5rem,8vw,6.25rem); }
 .award-directory-heading > div:first-child { max-width: 650px; }
 .award-directory-heading h3 { font-size: clamp(2.4rem,4.2vw,4.6rem); font-weight: 760; letter-spacing: -.06em; line-height: .98; margin: 0; }
 .award-directory-heading > div:first-child > p:last-child { color: var(--muted); font-size: 1rem; line-height: 1.65; margin: 1.25rem 0 0; max-width: 560px; }
@@ -397,7 +397,6 @@ button { font: inherit; }
 .reveal.visible { opacity: 1; transform: none; }
 
 @media (min-width:992px) {
-  .award-directory-heading { margin-top: clamp(2.5rem,4vh,3.75rem); }
   .award-directory-heading h3 { font-size: clamp(2.8rem,3.7vw,3.9rem); }
   .award-directory-heading > div:first-child > p:last-child { margin-top: .85rem; }
   .award-directory { height: clamp(490px,56svh,570px); min-height: 0; }
@@ -466,7 +465,6 @@ button { font: inherit; }
   .state-honors-list li { min-height: 0; padding: 1.5rem 0 1.5rem 2rem; }
   .state-honors-list li + li { border-left: 0; border-top: 1px solid rgba(20,22,34,.09); }
   .state-honors-list li::before { left: -7px; top: 1.75rem; }
-  .award-directory-heading { margin-top: 4rem; }
   .award-directory { grid-template-areas: "head" "list"; grid-template-columns: minmax(0,1fr); min-height: 0; }
   .directory-head { border-bottom: 1px solid var(--line); border-right: 0; min-height: 0; padding: 1.25rem; }
   .directory-head [data-award-period-copy] { max-width: 480px; }
@@ -515,7 +513,6 @@ button { font: inherit; }
   .book-stage { border-radius: 16px; padding: 11%; }
   .book-meta h3 { font-size: .95rem; }
   .book-meta p { font-size: .9375rem; }
-  .award-directory-heading { margin-top: 3.5rem; }
   .award-directory-heading h3 { font-size: 2.5rem; }
   .award-view-tabs { grid-template-columns: 1fr; }
   .award-view-tab { padding: .75rem; }
