@@ -23,7 +23,8 @@
     { element: document.querySelector("#su-menh"), hash: "#su-menh" },
     { element: document.querySelector("#giai-thuong-nha-nuoc"), hash: "#giai-thuong-nha-nuoc" },
     { element: document.querySelector("#video"), hash: "#video" },
-    { element: document.querySelector("#giai-thuong"), hash: "#giai-thuong" }
+    { element: document.querySelector("#giai-thuong"), hash: "#giai-thuong-nha-nuoc" },
+    { element: document.querySelector("#dau-an-xuat-ban"), hash: "#dau-an-xuat-ban" }
   ].filter((marker) => marker.element);
   let scrollCueSuppressedUntilExit = false;
 
