@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Hourglass</title>
+  <desc id="desc">A red hourglass.</desc>
+  <g fill="none" stroke="#d7192d" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+    <path d="M18 12h28M18 52h28"/>
+    <path d="M21 14c0 9 2.5 13.5 9.3 18C23.5 36.5 21 41 21 50h22c0-9-2.5-13.5-9.3-18C40.5 27.5 43 23 43 14Z" fill="#fff7f8"/>
+    <path d="M24 18h16l-7.3 11.4h-1.4Z" fill="#d7192d" stroke="none"/>
+    <path d="M31.5 35h1L41 48H23Z" fill="#d7192d" stroke="none"/>
+  </g>
+</svg>

@@ -361,12 +361,23 @@ button { font: inherit; }
 .timeline-year-button.hidden { display: none; }
 .award-empty-state { align-items: center; background: linear-gradient(145deg,#fbfaf7,#f0efea); display: none; flex-direction: column; grid-area: list; justify-content: center; min-height: 100%; padding: 3rem; text-align: center; }
 .award-empty-state > span { align-items: center; background: #fff; border-radius: 50%; box-shadow: 0 14px 36px rgba(25,28,40,.09); color: var(--brand); display: inline-flex; font-size: 1.45rem; height: 64px; justify-content: center; margin-bottom: 1.25rem; width: 64px; }
+.award-hourglass-badge { animation: award-hourglass-halo 4s ease-in-out infinite; }
+.award-hourglass,
+.award-hourglass img { display: block; height: 40px; width: 40px; }
 .award-empty-state > p { color: var(--muted); margin: .55rem 0 0; }
 .award-empty-state > p:first-of-type { color: var(--brand); font-size: .8125rem; font-weight: 760; letter-spacing: .09em; margin: 0; text-transform: uppercase; }
 .award-empty-state h4 { font-size: clamp(2.4rem,4vw,4rem); font-weight: 740; letter-spacing: -.055em; margin: .35rem 0 0; }
 .award-directory.is-alltime .directory-head { background: #f1f0eb; }
 .award-directory.is-alltime .award-timeline-rail, .award-directory.is-alltime .award-list { display: none; }
 .award-directory.is-alltime .award-empty-state { display: flex; }
+@keyframes award-hourglass-halo {
+  0%, 72%, 100% { box-shadow: 0 14px 36px rgba(25,28,40,.09), 0 0 0 0 rgba(215,25,45,0); transform: translateY(0); }
+  78% { box-shadow: 0 14px 36px rgba(25,28,40,.09), 0 0 0 10px rgba(215,25,45,.08); transform: translateY(-2px); }
+  88% { box-shadow: 0 14px 36px rgba(25,28,40,.09), 0 0 0 18px rgba(215,25,45,0); transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .award-hourglass-badge { animation: none; }
+}
 
 .closing-section { background: #fff; padding: 0 0 clamp(6rem,8vw,8rem); }
 .closing-panel { align-items: flex-end; background: linear-gradient(120deg,#bd1024,#e23348 55%,#83101d); border-radius: 28px; box-shadow: 0 24px 60px rgba(145,12,30,.25); color: #fff; display: flex; gap: 3rem; justify-content: space-between; overflow: hidden; padding: clamp(2rem,4.8vw,4.2rem); position: relative; }
