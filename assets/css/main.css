@@ -85,14 +85,16 @@ button { font: inherit; }
 .navbar { min-height: 62px; }
 .navbar-brand img { height: 42px; object-fit: contain; width: auto; }
 .navbar-nav { gap: .1rem; }
-.nav-link { border-radius: 9px; color: #414552; font-size: .9375rem; font-weight: 600; padding: .62rem .85rem !important; }
-.nav-link:hover, .nav-link:focus-visible { background: rgba(215,25,45,.08); color: var(--brand); }
+.nav-link { border-radius: 9px; color: #414552; font-size: .9375rem; font-weight: 600; padding: .62rem .85rem !important; transition: background .2s ease, color .2s ease, box-shadow .2s ease; }
+.nav-link:hover, .nav-link:focus-visible, .nav-link.active { background: rgba(215,25,45,.08); color: var(--brand); }
+.nav-link.active { box-shadow: inset 0 -2px 0 var(--brand); }
 .navbar-toggler { border: 0; border-radius: 9px; padding: .45rem; }
 .navbar-toggler:focus { box-shadow: 0 0 0 4px rgba(215,25,45,.14); }
 .mobile-menu { background: rgba(255,255,255,.94); border: 0; width: min(88vw, 420px) !important; }
 .mobile-nav { display: grid; }
-.mobile-nav a { align-items: center; border-bottom: 1px solid var(--line); display: flex; font-size: 1.35rem; font-weight: 700; gap: 1rem; padding: 1.15rem 0; }
+.mobile-nav a { align-items: center; border-bottom: 1px solid var(--line); display: flex; font-size: 1.35rem; font-weight: 700; gap: 1rem; padding: 1.15rem 0; transition: color .2s ease, padding .2s ease; }
 .mobile-nav a span { color: var(--brand); font-size: .9375rem; letter-spacing: .1em; }
+.mobile-nav a.active { color: var(--brand); padding-left: .65rem; }
 
 .fluent-button { align-items: center; border: 1px solid transparent; border-radius: 10px; display: inline-flex; font-size: .9375rem; font-weight: 650; gap: .65rem; justify-content: center; min-height: 50px; padding: .75rem 1.2rem; transition: box-shadow .2s ease, transform .2s ease, background .2s ease; }
 .fluent-button:hover { transform: translateY(-2px); }
@@ -208,8 +210,8 @@ button { font: inherit; }
 .mission-icon { align-items: center; background: linear-gradient(145deg,#ef4759,#ae1021); border-radius: 14px; box-shadow: 0 10px 24px rgba(130,10,27,.35); box-sizing: border-box; display: flex; font-size: 2.25rem; height: 52px; justify-content: center; line-height: 1; padding: 8px; width: 52px; }
 .mission-card h3 { font-size: 1.45rem; font-weight: 700; margin: 4rem 0 1rem; }
 .mission-card p { color: rgba(255,255,255,.67); margin: 0; }
-.state-honors-section { background: #f5f6fa; overflow: hidden; padding: clamp(5rem,8vw,8rem) 0; position: relative; }
-.state-honors-panel { background: #fff; border: 1px solid rgba(20,22,34,.08); border-radius: 32px; box-shadow: 0 24px 70px rgba(30,32,47,.08); overflow: hidden; padding: clamp(2.5rem,4vw,4rem); position: relative; }
+.state-honors-section { background: #fff; overflow: hidden; padding: clamp(5rem,8vw,8rem) 0; position: relative; }
+.state-honors-panel { background: transparent; border: 0; border-radius: 0; box-shadow: none; overflow: visible; padding: clamp(2.5rem,4vw,4rem); position: relative; }
 .state-honors-heading { display: block; max-width: 1120px; min-height: 330px; position: relative; z-index: 1; }
 .state-honors-number { display: block; height: auto; left: 0; opacity: .68; position: absolute; top: -1.65rem; width: clamp(17.5rem,18vw,18rem); z-index: 0; }
 .state-honors-copy { margin-left: clamp(15.5rem,18vw,17.5rem); max-width: 780px; position: relative; z-index: 1; }
@@ -454,7 +456,7 @@ button { font: inherit; }
   .quick-stats dd { font-size: .9375rem; }
   .bento-grid { grid-template-columns: 1fr; }
   .bento-wide { grid-column: auto; }
-  .state-honors-panel { border-radius: 24px; padding: 1.5rem; }
+  .state-honors-panel { padding: 1.5rem; }
   .state-honors-heading { min-height: 0; }
   .state-honors-number { left: auto; opacity: .16; right: -1.25rem; top: -.5rem; width: 12rem; }
   .state-honors-copy { margin-left: 0; }

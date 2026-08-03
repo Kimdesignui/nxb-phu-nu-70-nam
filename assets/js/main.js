@@ -15,7 +15,40 @@
   const progress = document.querySelector(".scroll-progress");
   const scrollCue = document.querySelector("[data-scroll-cue]");
   const storySection = document.querySelector("#cau-chuyen");
+  const navLinks = [...document.querySelectorAll('.site-header .nav-link[href^="#"], .mobile-nav a[href^="#"]')];
+  const navMarkers = [
+    { element: document.querySelector("#top"), hash: "#top" },
+    { element: document.querySelector("#cau-chuyen"), hash: "#cau-chuyen" },
+    { element: document.querySelector("#dau-an"), hash: "#dau-an" },
+    { element: document.querySelector("#su-menh"), hash: "#su-menh" },
+    { element: document.querySelector("#giai-thuong-nha-nuoc"), hash: "#giai-thuong" },
+    { element: document.querySelector("#video"), hash: "#video" },
+    { element: document.querySelector("#giai-thuong"), hash: "#giai-thuong" }
+  ].filter((marker) => marker.element);
   let scrollCueSuppressedUntilExit = false;
+
+  const setActiveNav = (hash) => {
+    navLinks.forEach((link) => {
+      const active = link.getAttribute("href") === hash;
+      link.classList.toggle("active", active);
+      if (active) link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    });
+  };
+
+  const updateActiveNav = () => {
+    const activationLine = window.scrollY + (header?.offsetHeight || 0) + Math.min(window.innerHeight * .24, 180);
+    let activeHash = navMarkers[0]?.hash || "#top";
+    navMarkers.forEach((marker) => {
+      const markerTop = marker.element.getBoundingClientRect().top + window.scrollY;
+      if (markerTop <= activationLine) activeHash = marker.hash;
+    });
+    setActiveNav(activeHash);
+  };
+
+  navLinks.forEach((link) => {
+    link.addEventListener("click", () => setActiveNav(link.getAttribute("href")));
+  });
 
   const setScrollCueVisibility = (visible) => {
     if (!scrollCue) return;
@@ -42,6 +75,7 @@
     const isInHero = !storySection || storySection.getBoundingClientRect().top > headerBottom + 32;
     if (!isInHero) scrollCueSuppressedUntilExit = false;
     setScrollCueVisibility(isInHero && !scrollCueSuppressedUntilExit);
+    updateActiveNav();
   };
 
   updateScroll();
